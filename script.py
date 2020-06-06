@@ -37,7 +37,6 @@ def get_total():
 
     #print(data)
 
-
     MSG_TXT['total_cases'] = data[1]
     MSG_TXT['new_cases_today'] = data[2]
     MSG_TXT['total_deaths'] = data[3]
@@ -51,13 +50,32 @@ def get_total():
     news = browser.find_elements_by_xpath("//li[@class= 'news_li']")
     news_data = [x.text for x in news[:5]]
     clean_news = [x.replace('[source]','') for x in news_data]
+    MSG_TXT['news'] = clean_news
 
     print(clean_news)
-
     print("Current Time =", time)
+
+def get_aus():
+    # Installed chromedriver in the path chrome/chromedriver
+    browser = webdriver.Chrome(executable_path="chrome/chromedriver")
+    browser.get("https://covidlive.com.au")
+
+    # Wait 10 seconds for page to load
+    timeout = 10
+
+    # Wait for the daily deaths chart to load, since it is the last thing to load in this website
+    try:
+        WebDriverWait(browser, timeout).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "div.container")))
+    except TimeoutException:
+        print("Timed out waiting for page to load")
+        browser.quit()
+
+    new = browser.find_element_by_xpath("//a[contains(.,'/cases')]")
+    print("NSW CASES: "+new.text)
 
 if __name__ == '__main__':
     print ( "Getting data\n" )
     get_total()
+    get_aus()
     final_msg = json.dumps(MSG_TXT)
     print(final_msg)
