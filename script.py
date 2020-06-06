@@ -11,7 +11,36 @@ import time
 
 import json
 
+CONNECTION_STRING = "HostName=sl-project.azure-devices.net;DeviceId=test;SharedAccessKey=AkvO6Oh3Kww1kxz3VOJdQip6rrtvpzvqa8Q5YRCF2UU="
 MSG_TXT = dict()
+
+def iothub_client_init():
+    # Create an IoT Hub client
+    client = IoTHubDeviceClient.create_from_connection_string(CONNECTION_STRING)
+    return client
+
+def iothub_run():
+
+    try:
+        client = iothub_client_init()
+        print ( "IoT Hub device running" )
+
+        while True:
+            # Send the message.
+            print("Getting data...")
+            get_total()
+            get_aus()
+            final_msg = json.dumps(MSG_TXT)
+            print("Sending message.")
+            client.send_message(final_msg)
+            now = datetime.now()
+            curr_time = now.strftime("%Y-%m-%d %H:%M:%S")
+            #print("Time sent: ", time)
+            print ("Message successfully sent at {}, sending update in 20 seconds".format(curr_time))
+            time.sleep(20)
+
+    except KeyboardInterrupt:
+        print ( "Client stopped" )
 
 def get_total():
     # Installed chromedriver in the path chrome/chromedriver
@@ -76,11 +105,13 @@ def get_aus():
 
 
 if __name__ == '__main__':
-    print ( "Getting data...\n" )
-    get_total()
-    get_aus()
-    final_msg = json.dumps(MSG_TXT)
-    now = datetime.now()
-    time = now.strftime("%Y-%m-%d %H:%M:%S")
-    print("Time sent: ", time)
-    print(final_msg)
+    #print ( "Getting data...\n" )
+    #get_total()
+    #get_aus()
+    #final_msg = json.dumps(MSG_TXT)
+    print ( "IoT Hub " )
+    iothub_run()
+    #now = datetime.now()
+    #time = now.strftime("%Y-%m-%d %H:%M:%S")
+    #print("Time sent: ", time)
+    #print(final_msg)
