@@ -21,12 +21,12 @@ def iothub_client_init():
 
 def iothub_run():
 
+    # Gather data from websites and send to Stream Analytics
     try:
         client = iothub_client_init()
         print ( "IoT Hub device running" )
 
         while True:
-            # Send the message.
             print("Getting data...")
             get_total()
             get_aus()
@@ -35,7 +35,6 @@ def iothub_run():
             client.send_message(final_msg)
             now = datetime.now()
             curr_time = now.strftime("%Y-%m-%d %H:%M:%S")
-            #print("Time sent: ", time)
             print ("Message successfully sent at {}, sending update in 20 seconds".format(curr_time))
             time.sleep(20)
 
@@ -105,13 +104,5 @@ def get_aus():
 
 
 if __name__ == '__main__':
-    #print ( "Getting data...\n" )
-    #get_total()
-    #get_aus()
-    #final_msg = json.dumps(MSG_TXT)
-    print ( "IoT Hub " )
+    print ("Coronavirus Tracker NSW -- steven-lm ")
     iothub_run()
-    #now = datetime.now()
-    #time = now.strftime("%Y-%m-%d %H:%M:%S")
-    #print("Time sent: ", time)
-    #print(final_msg)
