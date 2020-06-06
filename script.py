@@ -23,19 +23,15 @@ def get_total():
 
     # Wait for the daily deaths chart to load, since it is the last thing to load in this website
     try:
-        WebDriverWait(browser, timeout).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "div.tabbable-panel-deaths")))
+        WebDriverWait(browser, timeout).until(EC.visibility_of_element_located((By.XPATH, "//*[@id='main_table_countries_today']/tbody[3]/tr")))
     except TimeoutException:
         print("Timed out waiting for page to load")
         browser.quit()
 
     new = browser.find_element_by_xpath("//tr[@class='total_row']")
-    row = new.find_element_by_xpath("./..")
-    
-    print(row.text.split(" "))
+    data= new.text.split(" ")
 
-    data = row.text.split(" ")
-
-    #print(data)
+    print(data)
 
     MSG_TXT['total_cases'] = data[1]
     MSG_TXT['new_cases_today'] = data[2]
@@ -44,21 +40,19 @@ def get_total():
     MSG_TXT['total_recovered'] = data[5]
     MSG_TXT['active_cases'] = data[6]
 
-    now = datetime.now()
-    time = now.strftime("%Y-%m-%d %H:%M:%S")
-
     news = browser.find_elements_by_xpath("//li[@class= 'news_li']")
     news_data = [x.text for x in news[:5]]
     clean_news = [x.replace('[source]','') for x in news_data]
     MSG_TXT['news'] = clean_news
 
     print(clean_news)
-    print("Current Time =", time)
+
+    browser.close()
 
 def get_aus():
     # Installed chromedriver in the path chrome/chromedriver
     browser = webdriver.Chrome(executable_path="chrome/chromedriver")
-    browser.get("https://covidlive.com.au")
+    browser.get("https://covidlive.com.au/")
 
     # Wait 10 seconds for page to load
     timeout = 10
@@ -70,12 +64,23 @@ def get_aus():
         print("Timed out waiting for page to load")
         browser.quit()
 
-    new = browser.find_element_by_xpath("//a[contains(.,'/cases')]")
-    print("NSW CASES: "+new.text)
+    au_cases = browser.find_element_by_xpath("//*[@id='content']/div/div[1]/section/table/tbody/tr[10]/td[2]").text
+    nsw_cases = browser.find_element_by_xpath("//*[@id='content']/div/div[1]/section/table/tbody/tr[2]/td[2]").text
+    nsw_active = browser.find_element_by_xpath("//*[@id='content']/div/div[2]/section/table/tbody/tr[2]/td[2]").text
+
+    MSG_TXT['au_cases'] = au_cases
+    MSG_TXT['nsw_cases'] = nsw_cases
+    MSG_TXT['nsw_active'] = nsw_active
+
+    browser.close()     
+
 
 if __name__ == '__main__':
-    print ( "Getting data\n" )
+    print ( "Getting data...\n" )
     get_total()
     get_aus()
     final_msg = json.dumps(MSG_TXT)
+    now = datetime.now()
+    time = now.strftime("%Y-%m-%d %H:%M:%S")
+    print("Time sent: ", time)
     print(final_msg)
