@@ -30,12 +30,14 @@ def iothub_run():
             print("Getting data...")
             get_total()
             get_aus()
+            get_area()
             final_msg = json.dumps(MSG_TXT)
             print("Sending message.")
             client.send_message(final_msg)
             now = datetime.now()
             curr_time = now.strftime("%Y-%m-%d %H:%M:%S")
             print ("Message successfully sent at {}, sending update in 20 seconds".format(curr_time))
+            print("Message: \n {}".format(final_msg))
             time.sleep(20)
 
     except KeyboardInterrupt:
@@ -100,8 +102,37 @@ def get_aus():
     MSG_TXT['nsw_cases'] = nsw_cases
     MSG_TXT['nsw_active'] = nsw_active
 
-    browser.close()     
+    browser.close()   
 
+def get_area():
+    # Installed chromedriver in the path chrome/chromedriver
+    browser = webdriver.Chrome(executable_path="chrome/chromedriver")
+    browser.get("https://www.health.nsw.gov.au/Infectious/covid-19/Pages/stats-nsw.aspx")
+
+    # Wait 10 seconds for page to load
+    timeout = 10
+
+    # Wait for the table to load.
+    try:
+        WebDriverWait(browser, timeout).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "div.AspNet-WebPart")))
+    except TimeoutException:
+        print("Timed out waiting for page to load")
+        browser.quit()
+
+    area_names = browser.find_elements_by_xpath("//*[@id='table-lhd-recovery']/table/tbody/tr/td[1]")
+    area_cases = browser.find_elements_by_xpath("//*[@id='table-lhd-recovery']/table/tbody/tr/td[4]")
+
+    del(area_names[-1])
+    del(area_cases[-1])
+    final_area_cases = dict()
+
+    for x in area_names:
+        final_area_cases[x.text] = area_cases[area_names.index(x)].text
+    #print(final_area_cases)
+
+    MSG_TXT.update(final_area_cases)
+
+    browser.close()  
 
 if __name__ == '__main__':
     print ("Coronavirus Tracker NSW -- steven-lm ")
