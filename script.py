@@ -27,6 +27,8 @@ def iothub_run():
         print ( "IoT Hub device running" )
 
         while True:
+            # Installed chromedriver in the path chrome/chromedriver
+            browser = webdriver.Chrome(executable_path="chrome/chromedriver")
             print("Getting data...")
             get_total()
             get_aus()
@@ -43,9 +45,8 @@ def iothub_run():
     except KeyboardInterrupt:
         print ( "Client stopped" )
 
+''
 def get_total():
-    # Installed chromedriver in the path chrome/chromedriver
-    browser = webdriver.Chrome(executable_path="chrome/chromedriver")
     browser.get("https://www.worldometers.info/coronavirus")
 
     # Wait 10 seconds for page to load
@@ -81,8 +82,6 @@ def get_total():
     browser.close()
 
 def get_aus():
-    # Installed chromedriver in the path chrome/chromedriver
-    browser = webdriver.Chrome(executable_path="chrome/chromedriver")
     browser.get("https://covidlive.com.au/")
 
     # Wait 10 seconds for page to load
@@ -106,8 +105,6 @@ def get_aus():
     browser.close()   
 
 def get_area():
-    # Installed chromedriver in the path chrome/chromedriver
-    browser = webdriver.Chrome(executable_path="chrome/chromedriver")
     browser.get("https://www.health.nsw.gov.au/Infectious/covid-19/Pages/stats-nsw.aspx")
 
     # Wait 10 seconds for page to load
@@ -129,7 +126,6 @@ def get_area():
 
     for x in area_names:
         final_area_cases[x.text] = area_cases[area_names.index(x)].text
-    #print(final_area_cases)
 
     MSG_TXT.update(final_area_cases)
 
