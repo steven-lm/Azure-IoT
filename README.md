@@ -14,3 +14,4 @@
 ## Power BI
 
 ## Setup
+-Chromedriver installed in '/chrome/chromedriver' path

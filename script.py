@@ -73,7 +73,8 @@ def get_total():
     news = browser.find_elements_by_xpath("//li[@class= 'news_li']")
     news_data = [x.text for x in news[:5]]
     clean_news = [x.replace('[source]','') for x in news_data]
-    MSG_TXT['news'] = clean_news
+    #MSG_TXT['news'] = clean_news
+    MSG_TXT['news'] = clean_news[0]
 
     print(clean_news)
 
