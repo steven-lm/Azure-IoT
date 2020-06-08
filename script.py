@@ -13,6 +13,7 @@ import json
 
 CONNECTION_STRING = "HostName=sl-project.azure-devices.net;DeviceId=test;SharedAccessKey=AkvO6Oh3Kww1kxz3VOJdQip6rrtvpzvqa8Q5YRCF2UU="
 MSG_TXT = dict()
+driver_path = "chrome/chromedriver"
 
 def iothub_client_init():
     # Create an IoT Hub client
@@ -27,8 +28,6 @@ def iothub_run():
         print ( "IoT Hub device running" )
 
         while True:
-            # Installed chromedriver in the path chrome/chromedriver
-            browser = webdriver.Chrome(executable_path="chrome/chromedriver")
             print("Getting data...")
             get_total()
             get_aus()
@@ -45,8 +44,9 @@ def iothub_run():
     except KeyboardInterrupt:
         print ( "Client stopped" )
 
-''
 def get_total():
+    # Installed chromedriver in the path chrome/chromedriver
+    browser = webdriver.Chrome(executable_path=driver_path)
     browser.get("https://www.worldometers.info/coronavirus")
 
     # Wait 10 seconds for page to load
@@ -83,6 +83,7 @@ def get_total():
     browser.close()
 
 def get_aus():
+    browser = webdriver.Chrome(executable_path=driver_path)
     browser.get("https://covidlive.com.au/")
 
     # Wait 10 seconds for page to load
@@ -106,6 +107,7 @@ def get_aus():
     browser.close()   
 
 def get_area():
+    browser = webdriver.Chrome(executable_path=driver_path)
     browser.get("https://www.health.nsw.gov.au/Infectious/covid-19/Pages/stats-nsw.aspx")
 
     # Wait 10 seconds for page to load
@@ -134,6 +136,6 @@ def get_area():
 
 if __name__ == '__main__':
     print ("Coronavirus Tracker NSW -- steven-lm ")
-    #iothub_run()
-    browser = webdriver.Chrome(executable_path="chrome/chromedriver")
-    get_total()
+    iothub_run()
+    #browser = webdriver.Chrome(executable_path=driver_path)
+    #get_total()
