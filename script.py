@@ -62,8 +62,6 @@ def get_total():
     new = browser.find_element_by_xpath("//tr[@class='total_row']")
     data= new.text.split(" ")
 
-    print(data)
-
     MSG_TXT['total_cases'] = data[1]
     MSG_TXT['new_cases_today'] = data[2]
     MSG_TXT['total_deaths'] = data[3]
@@ -77,8 +75,6 @@ def get_total():
 
     for x in clean_news:
         MSG_TXT["news{}".format(clean_news.index(x))] = x
-    
-    print(MSG_TXT)
 
     browser.close()
 
@@ -137,5 +133,4 @@ def get_area():
 if __name__ == '__main__':
     print ("Coronavirus Tracker NSW -- steven-lm ")
     iothub_run()
-    #browser = webdriver.Chrome(executable_path=driver_path)
-    #get_total()
+
