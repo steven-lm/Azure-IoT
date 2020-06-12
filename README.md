@@ -2,7 +2,8 @@
 
 This project was made as part of the Microsoft Student Accelerator program 2020.
 
-A python script which monitors COVID-19 cases in NSW by scraping multiple websites.
+A python script which monitors COVID-19 cases in NSW by scraping multiple websites. Data is sent to Azure IoT hub, processed with Stream Analytics and visualised using Power BI.
+
 
 ## Table of contents
 * [IoT Hub](#iot-hub)
