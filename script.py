@@ -69,13 +69,6 @@ def get_total():
     MSG_TXT['total_recovered'] = data[5]
     MSG_TXT['active_cases'] = data[6]
 
-    news = browser.find_elements_by_xpath("//li[@class= 'news_li']")
-    news_data = [x.text for x in news[:5]]
-    clean_news = [x.replace('[source]','') for x in news_data]
-
-    for x in clean_news:
-        MSG_TXT["news{}".format(clean_news.index(x))] = x
-
     browser.close()
 
 def get_aus():
