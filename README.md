@@ -12,8 +12,11 @@ A python script which monitors COVID-19 cases in NSW by scraping multiple websit
 * [Setup & Dependencies](#setup)
 
 ## IoT Hub
+Formatting: JSON
 
 ## Stream Analytics
+Input : IoT Hub
+Output: PowerBI
 
 ## Power BI
 
