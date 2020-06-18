@@ -17,6 +17,8 @@ Formatting: JSON
 Data:
   - Total cases
   - Active cases
+  - AU Cases
+  - NSW Cases
 
 ## Stream Analytics
 Input : IoT Hub
