@@ -19,6 +19,7 @@ Data:
   - Active cases
   - AU Cases
   - NSW Cases
+  - News updates
 
 ## Stream Analytics
 Input : IoT Hub
