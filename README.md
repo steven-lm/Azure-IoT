@@ -19,6 +19,7 @@ Data:
   - Active cases
   - AU Cases
   - NSW Cases
+  - NSW Active cases
   - News updates
 
 ## Stream Analytics
